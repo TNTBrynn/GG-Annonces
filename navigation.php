@@ -1,6 +1,8 @@
 <head>
-<link rel="stylesheet" href="projet2PDO.css">
+  <link rel="stylesheet" href="">
+  <?php require_once ('Ressources.php'); ?>
 </head>
+
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark static-top">
     <ul class="navbar-nav">
