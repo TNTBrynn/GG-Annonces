@@ -11,13 +11,15 @@
 </body>
 </html>
 <?php
-    //MDP: ProjetWeb3
     //email: 2044087@cgodin.qc.ca
+    //username: progweb
+    //MDP: ProjetWeb3
     // Création de la base de données projet02_Patry
     try{
         // Connexion à la bdd
         $db = new PDO('mysql:host=mysql-progweb.alwaysdata.net', 'progweb','ProjetWeb3');
         $db->exec('SET NAMES "UTF8"');
+
         //contient tout le SQL pour creer la base de données et les tables
         $query = file_get_contents("SQLQueryCreationTables.sql");
         // sql to create table
@@ -34,5 +36,3 @@
     //Création de la table liste dans la base de données projet02_Patry
     $db = null;
 ?>
-
-
