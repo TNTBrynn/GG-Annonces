@@ -11,10 +11,12 @@
 </body>
 </html>
 <?php
+    //MDP: ProjetWeb3
+    //email: 2044087@cgodin.qc.ca
     // Création de la base de données projet02_Patry
     try{
         // Connexion à la bdd
-        $db = new PDO('mysql:host=localhost', 'root','');
+        $db = new PDO('mysql:host=mysql-progweb.alwaysdata.net', 'progweb','ProjetWeb3');
         $db->exec('SET NAMES "UTF8"');
         //contient tout le SQL pour creer la base de données et les tables
         $query = file_get_contents("SQLQueryCreationTables.sql");
@@ -22,7 +24,7 @@
         $sql= $query;
         // use exec() because no results are returned
         $db->exec($sql);
-        echo "La base de donnée projet02_Patry est créee avec succès";        
+        echo "La base de donnée PJF_GLMS est créee avec succès";        
 
     } catch (PDOException $e){
         echo 'Erreur : '. $e->getMessage();
