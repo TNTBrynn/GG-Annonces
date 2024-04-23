@@ -62,28 +62,61 @@
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the updated user information from the form
-    $name = $_POST['name'];
+    $id = $_POST['id'];
+    $statut = $_POST['statut'];
+    $noEmp = $_POST['noEmp'];
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
     $email = $_POST['email'];
-    $address = $_POST['address'];
+    $mdp = $_POST['mdp'];
+    $telM = $_POST['telM'];
+    $telT = $_POST['telT'];
+    $cell = $_POST['cell'];
     
     // TODO: Update the user information in the database or perform any other necessary actions
-    
+
+    require_once("connect.php");
+
+    try {
+        $sql = "UPDATE utilisateurs SET Statut = :statut, NoEmpl = :noEmp, Nom = :nom, Prenom = :prenom, Courriel = :email, MotDePasse = :mdp, NoTelMaison = :telM, NoTelTravail = :telT, NoTelCellulaire = :cell WHERE NoUtilisateur = :id";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':statut' => $statut,
+            ':noEmp' => $noEmp,
+            ':nom' => $nom,
+            ':prenom' => $prenom,
+            ':email' => $email,
+            ':mdp' => $mdp,
+            ':telM' => $telM,
+            ':telT' => $telT,
+            ':cell' => $cell,
+            ':id' => $id
+        ]);
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+
     // Redirect the user back to the profile page after updating
-    header('Location: profil.php?id=' . $_GET['id']);
+    header('Location: profil.php?id=' . $id);
     exit;
 }
 
 // Retrieve the user information from the database or any other data source
-$nom = 'Coxlong';
-$prenom = 'Mike';
-$email = 'MikeC@example.com';
-$statut = '9';
-$noEmp = '69';
-$mdp = 'minecraft';
-$telHome = '(418) 123-4567';
-$telWork = '(418) 123-4567';
-$cell = '(418) 123-4567';
 
+require_once("connect.php");
+
+// Get the user ID from the query string
+$id = $_GET['id'];
+
+$sql = "SELECT * FROM utilisateurs WHERE NoUtilisateur = :id";
+$stmt = $db->prepare($sql);
+$stmt->execute([':id' => $id]);
+
+if ($stmt->rowCount() > 0) {
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    echo "No records found with ID = $id.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -95,32 +128,35 @@ $cell = '(418) 123-4567';
     <h1>Votre Profil</h1>
     
     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        
         <label for="name">Statut d'employé:</label><br>
-        <input class='email' type="text" name="nom" value="<?php echo $statut; ?>"><br>
+        <input class='email' type="text" name="statut" value="<?php echo $row['Statut']; ?>"><br>
 
         <label for="name">Numéro d'employée:</label><br>
-        <input class='email' type="text" name="nom" value="<?php echo $noEmp; ?>"><br>
+        <input class='email' type="text" name="noEmp" value="<?php echo $row['NoEmpl']; ?>"><br>
 
         <label for="name">Nom de famille:</label><br>
-        <input class='email' type="text" name="nom" value="<?php echo $nom; ?>"><br>
+        <input class='email' type="text" name="nom" value="<?php echo $row['Nom']; ?>"><br>
         
         <label for="name">Prénom:</label><br>
-        <input class='email' type="text" name="prenom" value="<?php echo $prenom; ?>"><br>
+        <input class='email' type="text" name="prenom" value="<?php echo $row['Prenom']; ?>"><br>
 
         <label for="email">Email:</label><br>
-        <input class='email' type="email" name="email" value="<?php echo $email; ?>"><br>
+        <input class='email' type="email" name="email" value="<?php echo $row['Courriel']; ?>"><br>
 
         <label for="name">Mot de passe:</label><br>
-        <input class='email' type="text" name="nom" value="<?php echo $mdp; ?>"><br>
+        <input class='email' type="text" name="mdp" value="<?php echo $row['MotDePasse']; ?>"><br>
 
         <label for="address">Téléphone maison:</label><br>
-        <input class='email' type="text" name="adresse" value="<?php echo $telHome; ?>"><br>
+        <input class='email' type="text" name="telM" value="<?php echo $row['NoTelMaison']; ?>"><br>
 
         <label for="address">Téléphone travail:</label><br>
-        <input class='email' type="text" name="adresse" value="<?php echo $telWork; ?>"><br>
+        <input class='email' type="text" name="TtlT" value="<?php echo $row['NoTelTravail']; ?>"><br>
         
         <label for="address">Cellulaire:</label><br>
-        <input class='email' type="text" name="adresse" value="<?php echo $cell; ?>"><br> <br>
+        <input class='email' type="text" name="cell" value="<?php echo $row['NoTelCellulaire']; ?>"><br> <br>
         
         <input class='bouton' type="submit" value="Sauvegarder">
     </form>
