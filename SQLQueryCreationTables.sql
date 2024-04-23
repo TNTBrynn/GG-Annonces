@@ -7,7 +7,7 @@ CREATE TABLE utilisateurs(
     NoUtilisateur INT NOT NULL AUTO_INCREMENT,
     Courriel varchar(50) DEFAULT NULL,
     MotDePasse varchar(15) DEFAULT NULL,
-    Creation DATE DEFAULT CURRENT_TIMESTAMP,
+    Creation DATETIME DEFAULT CURRENT_TIMESTAMP,
     NbConnexions int DEFAULT 0,
     Statut int DEFAULT 0,
     NoEmpl int,
