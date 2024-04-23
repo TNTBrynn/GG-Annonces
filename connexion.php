@@ -7,77 +7,76 @@ $_SESSION["Courriel"] = null;
 
 //quand bouton est clické
 if (isset($_POST['bouton'])) {
-    //quand boutton clické et que email et mdp sont remplis
-    if (isset($_POST['email']) && isset($_POST['password'])) {
-        $exprReg = '/^$/';
-        $email = $_POST['email'];
-        $mdp = $_POST['password'];
+    //quand boutton est clické et que le email et mdp sont remplis
+    if (isset($_POST['email']) && isset($_POST['password']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+        $exprReg = '/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i';
+        $email = strip_tags($_POST['email']);
+        $mdp = strip_tags($_POST['password']);
 
-        if (preg_match($exprReg, $email) && preg_match($exprReg, $mdp)) {
-
+        //vérifie si le courriel match le regex
+        if (preg_match($exprReg, $email) == 1) {
             $_SESSION["Courriel"] = $_POST['email'];
 
-            if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
-                //envoie nom et prenom dans la table utilisateur
-                $nom = strip_tags($_POST['Nom']);
-                $prenom = strip_tags($_POST['Prenom']);
+            $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email AND `MotDePasse` = :mdp";
+            $query = $db->prepare($sql);
+            $query->bindValue(':email', $email, PDO::PARAM_STR);
+            $query->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-                $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
-
-                $query = $db->prepare($sql);
-
-                $query->bindValue(':nom', $nom, PDO::PARAM_STR);
-                $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-
-                $query->execute();
-            } else {
-                //si aucun nom et prenom est défini, renvoie l'utilisateur à Profil utilisateur
-                header('Location: profil.php');
+            foreach ($result as $user) {
+                $idUtilisateur = $user['NoUtilisateur'];
+                $nbConnexion = $user['NbConnexions'] + 1;
             }
-        }
+            if ($result) {
+                echo $idUtilisateur;
+                echo $nbConnexion;
+                //envoie date/heure et nb de connexions dans la table connexions
 
+                $sql = "UPDATE `utilisateurs` SET `NbConnexions`=:nbConnexion WHERE `NoUtilisateur`=:idUtilisateur;";
+                $query = $db->prepare($sql);
+                $query->bindValue(':nbConnexion', $nbConnexion, PDO::PARAM_STR);
+                $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
+                $query->execute();
+
+                $dateHeure = date("Y-m-d H:i:s");
+                $sql = "INSERT INTO `connexions` (`Connexion`, `NoUtilisateur`) VALUES (:dateHeure, :idUtilisateur);";
+                $query = $db->prepare($sql);
+                $query->bindValue(':dateHeure', $dateHeure, PDO::PARAM_STR);
+                $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
+                $query->execute();
+
+                /*if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
+                    //envoie nom et prenom dans la table utilisateur
+                    $nom = strip_tags($_POST['Nom']);
+                    $prenom = strip_tags($_POST['Prenom']);
+
+                    $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
+                    $query = $db->prepare($sql);
+                    $query->bindValue(':nom', $nom, PDO::PARAM_STR);
+                    $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
+                    $query->execute();
+                } else {
+                    //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
+                    header('Location: profil.php');
+                }*/
+            } else {
+                echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
+            }
+        } else {
+            //header('Location: connexion.php');
+            echo '<script>alert("Veuillez remplir tous les champs")</script>';
+        }
     } else {
-        header('Location: connexion.php');
+        //header('Location: connexion.php');
+        echo '<script>alert("Veuillez remplir tous les champs")</script>';
     }
 } else {
     $_SESSION["Courriel"] = null;
     echo 'btnConnexion marche pas';
 }
-
 require_once ('close.php');
 ?>
-
-<script type="text/javascript">
-    /*$(document).ready(function () {
-        $("#btnConnexion").click(function () {
-            var exprReg = /^$/;
-            var strEmail = $("#tbEmail").val();
-            var strMDP = $("#tbMDP").val();
-
-            if (exprReg.test(strEmail) == true || exprReg.test(strMDP) == true)
-                alert("Veuillez remplir tous les champs");
-            else {
-                var strDateHeure = new Date(); //table connexions
-
-                $.ajax({
-                    url: 'traitement_connexion.php',
-                    type: 'post',
-                    data: {
-                        email: strEmail,
-                        password: strMDP
-                    },
-                    success: function (response) {
-                        if (response === 'success') {
-                            window.location.href = 'Entreprise.php';
-                        } else {
-                            alert(response);
-                        }
-                    }
-                });
-            }
-        });
-    });*/
-</script>
 
 <br>
 
@@ -87,8 +86,7 @@ require_once ('close.php');
         <div class="form-row">
             <div class="form-group col-md-12">
                 <label>Courriel</label>
-                <input type="email" class="form-control" id="tbEmail" placeholder="Courriel @" required="required"
-                    name="email">
+                <input class="form-control" id="tbEmail" placeholder="Courriel @" required="required" name="email">
             </div>
             <div class="invalid-feedback">Veuillez entrer votre Courriel</div>
         </div>
