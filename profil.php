@@ -123,6 +123,9 @@ if ($stmt->rowCount() > 0) {
 <html>
 <head>
     <title>Votre Profil</title>
+
+    <?php require_once('navigation.php'); ?>
+
 </head>
 <body>
     <h1>Votre Profil</h1>

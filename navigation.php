@@ -15,7 +15,11 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1030; /* to prevent the navbar getting covered up by other content */
         }
+
         .navbar a {
             text-decoration: none;
             color: white;
