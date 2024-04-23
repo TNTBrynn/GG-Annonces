@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <?php
+    require_once 'navigation.php';
+    require_once 'ressources.php';
   ?>
 
 <script>
@@ -62,12 +62,17 @@
 
   <?php
       if($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        $email = strip_tags($_POST["email"]);
+        $password = strip_tags($_POST["password"]);
+
         require_once "connect.php";
-        //$sql = "INSERT INTO utilisateurs (Courriel, MotDePasse) VALUES ('$email', '$password')";
-        //$result = mysqli_query($db, $sql);
-        
+        $sql = "INSERT INTO 'utilisateurs' ('Courriel', 'MotDePasse') VALUES (:email, :password);";
+        $query = $db->prepare($sql);
+
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        $query->bindValue(':password', $password, PDO::PARAM_STR);
+
+        $query->is_execute();
         //header("Location: inscriptionConfirmee.php");
       }
   ?>
