@@ -37,44 +37,48 @@ try {
 }
 echo '<br>';
 require_once ("connect.php");
-$tValeurs = array();
-$fichier = new fichier("insertionCategories.csv");
-if ($fichier->existe()) {
-    $fichier->chargeEnMemoire();
-    $fichier->ouvre();
-    while ($fichier->detecteFin()) {
-        $fichier->litDonneesLigne($tValeurs, ";", "Description");
-        $sql = "INSERT INTO categories (Description) VALUES ('" . $tValeurs[0] . "')";
-        $db->exec($sql);
+$fp = fopen("insertionCategories.csv", "r");
+if ($fp) {
+    fgetcsv($fp); //saute la première ligne
+    while (!feof($fp)) {
+        $ligne = fgetcsv($fp);
+        $sql = "INSERT INTO categories (Description) VALUES (" . $ligne[0] . ")";
+        $query = $db->prepare($sql);
+        $query->execute();
     }
-    $fichier->ferme();
 } else {
     echo "Le fichier insertionCategories.csv n'existe pas";
 }
-$fichier = new fichier("insertionUtilisateurs.csv");
-if ($fichier->existe()) {
-    $fichier->chargeEnMemoire();
-    $fichier->ouvre();
-    while (!$fichier->detecteFin()) {
-        $fichier->litDonneesLigne($tValeurs, ';', "NoUtilisateur, Courriel, MotDePasse, Creation, NbConnexions, ville, Statut, NoEmpl, Nom, Prenom, NoTelMaison, NoTelTravail, NoTelCellulaire, Modification, AutreInfos");
-        $db->insereEnregistrement($tValeurs['NoUtilisateur']
-        ,$tValeurs['Courriel'],
-        $tValeurs['MotDePasse'],
-        $tValeurs['Creation'],
-        $tValeurs['NbConnexions'],
-        $tValeurs['ville'],
-         $tValeurs['Statut'],
-         $tValeurs['NoEmpl'],
-         $tValeurs['Nom'],
-         $tValeurs['Prenom'],
-         $tValeurs['NoTelMaison'],
-         $tValeurs['NoTelTravail'], 
-         $tValeurs['NoTelCellulaire'],
-         $tValeurs['Modification'],
-         $tValeurs['AutreInfos']);
-        $db->exec($sql);
+fclose($fp);
+$fp = fopen("insertionUtilisateurs.csv", "r");
+if ($fp) {
+    fgetcsv($fp); //saute la première ligne
+    while (!feof($fp)) {
+        $ligne = fgetcsv($fp);
+        $sql = "INSERT INTO utilisateurs (Courriel, MotDePasse, NbConnexions, Statut,
+         NoEmpl, Nom, Prenom, NoTelMaison, NoTelTravail, NoTelCellulaire, AutreInfos)
+        VALUES (" . $ligne[0] . ", " . $ligne[1] . ", " . $ligne[2] . ", " . $ligne[3] . ", " . $ligne[4] . ", " . $ligne[5] .
+            ", " . $ligne[6] . ", " . $ligne[7] . ", " . $ligne[8] . ", " . $ligne[9] . ", " . $ligne[10] . ")";
+        $query = $db->prepare($sql);
+        $query->execute();
     }
 } else {
     echo "Le fichier insertionUtilisateurs.csv n'existe pas";
 }
+$fp = fopen("insertionAnnonces.csv", "r");
+if($fp){
+    fgetcsv($fp); //saute la première ligne
+    while (!feof($fp)) {
+        $ligne = fgetcsv($fp);
+        $sql = "INSERT INTO annonces (NoUtilisateur, Categorie, DescriptionAbregee, DescriptionComplete, Prix, Photo, Etat)
+        VALUES (" . $ligne[0] . ", " . $ligne[1] . ", " . $ligne[2] . ", " . $ligne[3] . ", " . $ligne[4] . ", " . $ligne[5] .
+            ", " . $ligne[6] . ")";
+        $query = $db->prepare($sql);
+        $query->execute();
+    }
+} else {
+    echo "Le fichier insertionAnnonces.csv n'existe pas";
+}
+
+require_once ("close.php");
 ?>
