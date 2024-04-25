@@ -33,18 +33,17 @@ if (isset($_POST['btnEnvoyer'])) {
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com;';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'user@gmail.com';
-                    $mail->Password = 'password';
+                    $mail->Username = 'projetweb3glms@gmail.com';
+                    $mail->Password = 'ywoa afae aktr rxfx';
                     $mail->SMTPSecure = 'tls';
                     $mail->Port = 587;
 
-                    $mail->setFrom('from@gmail.com', 'Name');
+                    $mail->setFrom('projetweb3glms@gmail.com', 'Projet Web 3');
                     $mail->addAddress($email);
 
                     $mail->isHTML(true);
-                    $mail->Subject = 'Récupération du mot de passe';
-                    $mail->Body = '<b>Récupération du mot de passe pour Les petites annonces GG</b>';
-                    $mail->AltBody = 'Voici votre mot de passe : ' . $mdpUtilisateur;
+                    $mail->Subject = 'Recuperation du mot de passe';
+                    $mail->Body = '<b>Recuperation du mot de passe pour Les petites annonces GG</b> <br>Voici votre mot de passe : ' . $mdpUtilisateur;
                     $mail->send();
                     echo "Le courriel a été envoyé avec succès!";
                 } catch (Exception $e) {
