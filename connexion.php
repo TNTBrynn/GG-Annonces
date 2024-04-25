@@ -46,7 +46,7 @@ if (isset($_POST['bouton'])) {
                 $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
                 $query->execute();
 
-                /*if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
+                if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
                     //envoie nom et prenom dans la table utilisateur
                     $nom = strip_tags($_POST['Nom']);
                     $prenom = strip_tags($_POST['Prenom']);
@@ -59,7 +59,7 @@ if (isset($_POST['bouton'])) {
                 } else {
                     //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
                     header('Location: profil.php');
-                }*/
+                }
             } else {
                 echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
             }
