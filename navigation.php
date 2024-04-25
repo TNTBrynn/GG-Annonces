@@ -1,6 +1,5 @@
 <head>
-  <link rel="stylesheet" href="projet2PDO.css">
-  <!-- <link rel="stylesheet" href=""> -->
+  <link rel="stylesheet" href="">
   <?php require_once ('Ressources.php'); ?>
 </head>
 
