@@ -78,17 +78,17 @@ foreach ($items2 as $index => $item) {
 
     echo '<div class="grid-item">';
     echo '<h2>Item ' . ($index + 1) . '</h2>';
-    echo '<p>NoAnnonce: ' . $item['NoAnnonce'] . '</p>';
-    echo '<p>Date Added: ' . $item['Parution'] . '</p>';
-    echo '<p>Author: ' . $fullName . '</p>';
-    echo '<p>Category: ' . $category['Description'] . '</p>';
+    echo '<p>No Annonce: ' . $item['NoAnnonce'] . '</p>';
+    echo '<p>Date d\'ajout: ' . $item['Parution'] . '</p>';
+    echo '<p>Auteur: ' . $fullName . '</p>';
+    echo '<p>Categorie: ' . $category['Description'] . '</p>';
     echo '<p><a href="description.php?id=' . $item['NoAnnonce'] . '">' . $item['DescriptionAbregee'] . '</a></p>';
-    echo '<p>Price: ' . $item['Prix'] . '</p>';
+    echo '<p>Prix: ' . $item['Prix'] . ' $ CAD</p>';
     echo '<img src="' . $item['Photo'] . '" alt="' . $item['DescriptionComplete'] . '">';
     echo '</div>';
 }       
     } else {
-        echo "No ID found in the URL.";
+        header('Location: connexion.php');
     }
 ?>
     </div>
