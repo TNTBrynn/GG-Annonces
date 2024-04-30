@@ -29,10 +29,7 @@ if (isset($_POST['bouton'])) {
                 $nbConnexion = $user['NbConnexions'] + 1;
             }
             if ($result) {
-                echo $idUtilisateur;
-                echo $nbConnexion;
                 //envoie date/heure et nb de connexions dans la table connexions
-
                 $sql = "UPDATE `utilisateurs` SET `NbConnexions`=:nbConnexion WHERE `NoUtilisateur`=:idUtilisateur;";
                 $query = $db->prepare($sql);
                 $query->bindValue(':nbConnexion', $nbConnexion, PDO::PARAM_STR);
@@ -56,6 +53,8 @@ if (isset($_POST['bouton'])) {
                     $query->bindValue(':nom', $nom, PDO::PARAM_STR);
                     $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
                     $query->execute();
+                    
+                    header('Location: annonces.php');
                 } else {
                     //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
                     header('Location: profil.php');
@@ -64,17 +63,14 @@ if (isset($_POST['bouton'])) {
                 echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
             }
         } else {
-            //header('Location: connexion.php');
             echo '<script>alert("Veuillez remplir tous les champs")</script>';
         }
     } else {
-        //header('Location: connexion.php');
         echo '<script>alert("Veuillez remplir tous les champs")</script>';
     }
-} else {
+} else
     $_SESSION["Courriel"] = null;
-    echo 'btnConnexion marche pas';
-}
+
 require_once ('close.php');
 ?>
 
