@@ -1,31 +1,41 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <link rel="stylesheet" href="">
-  <?php require_once ('Ressources.php'); ?>
-</head>
+    <title>Menu Principal</title>
+    <style>
 
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #FF63E9;
+            height: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1030; /* to prevent the navbar getting covered up by other content */
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            margin-right: 10px;
+        }
+        .connex {
+            font-size: 20px;
+        }
+    </style>
+</head>
 <body>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark static-top">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="../entreprise/entreprise.php">Entreprises</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="../typeAdr/typeAdr.php">Type Adresse</a>
-      </li>
-      <li>
-        <a class="nav-link" href="../adresse/adresse.php">Adresse</a>
-      </li>
-      <li>
-        <a class="nav-link" href="../employe/employee.php">Employee</a>
-      </li>
-      <li>
-        <a class="nav-link" href="../typeTel/typeTel.php">Type de Tel</a>
-      </li>
-      <li>
-        <a class="nav-link" href="../tel/tel.php">Téléphone</a>
-      </li>
-      <li>
-        <a class="nav-link" href="../deconnexion.php">Déconnexion</a>
-      </li>
-    </ul>
-  </nav>
+    <div class="navbar">
+        <!-- Contenu de la barre de navigation -->
+        <a class="connex" href="profil.php">Profil</a>
+        <a class="connex" href="annonces.php?id=">Vos annonces</a>
+        <a class="connex" href="annonces.php">Annonces GG</a>
+    </div>
+</body>
+</html>
