@@ -31,10 +31,13 @@
     </style>
 </head>
 <body>
+<?php
+$id = $_GET['id'];
+?>
     <div class="navbar">
         <!-- Contenu de la barre de navigation -->
-        <a class="connex" href="profil.php">Profil</a>
-        <a class="connex" href="annonces.php?id=">Vos annonces</a>
+        <a class="connex" href="profil.php?id=<?php echo $id; ?>">Profil</a>
+        <a class="connex" href="annonces.php?id=<?php echo $id; ?>">Vos annonces</a>
         <a class="connex" href="annonces.php">Annonces GG</a>
     </div>
 </body>
