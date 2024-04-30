@@ -1,9 +1,13 @@
 <?php
 session_start();
+require_once ("Ressources.php");
 require_once ("navigationConn.php");
 require_once ('connect.php');
 
 $_SESSION["Courriel"] = null;
+
+$_SESSION["Nom"] = null;
+$_SESSION["Prenom"] = null;
 
 //quand bouton est clické
 if (isset($_POST['bouton'])) {
@@ -53,8 +57,8 @@ if (isset($_POST['bouton'])) {
                     $query->bindValue(':nom', $nom, PDO::PARAM_STR);
                     $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
                     $query->execute();
-                    
-                    header('Location: annonces.php');
+
+                    // header('Location: annonces.php');
                 } else {
                     //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
                     header('Location: profil.php');
@@ -73,6 +77,12 @@ if (isset($_POST['bouton'])) {
 
 require_once ('close.php');
 ?>
+
+
+<!-- .btn {
+            background - color: #FF63E9;
+        }
+ -->
 
 <br>
 
