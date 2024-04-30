@@ -106,16 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once("connect.php");
 
 // Get the user ID from the query string
-$id = $_GET['id'];
+session_start();
+$email = $_SESSION['Courriel'];
 
-$sql = "SELECT * FROM utilisateurs WHERE NoUtilisateur = :id";
+$sql = "SELECT * FROM utilisateurs WHERE Courriel = :Courriel";
 $stmt = $db->prepare($sql);
-$stmt->execute([':id' => $id]);
+$stmt->execute([':Courriel' => $email]);
 
 if ($stmt->rowCount() > 0) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
-    echo "No records found with ID = $id.";
+    echo "No records found with Courriel = $email.";
 }
 ?>
 

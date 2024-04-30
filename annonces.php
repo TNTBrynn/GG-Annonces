@@ -3,16 +3,18 @@
 <head>
 
 <?php
-$email = $_GET['email'];
+require_once('connect.php');
+session_start();
+$email = $_SESSION['Courriel'];
 
-$sql = "SELECT * FROM utilisateurs WHERE Courriel = :email";
+$sql = "SELECT * FROM utilisateurs WHERE Courriel = :Courriel";
 $stmt = $db->prepare($sql);
-$stmt->execute([':id' => $id]);
+$stmt->execute([':Courriel' => $id]);
 
 if ($stmt->rowCount() > 0) {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if (empty($row['Prenom']) || empty($row['Nom'])) {
-        header("Location: profil.php?id=$id");
+        // header("Location: profil.php?id=$id");
         exit;
     }
 }
@@ -53,9 +55,8 @@ if ($stmt->rowCount() > 0) {
     <div class="grid-container">
 <?php
     // Check if the 'id' parameter is present in the URL
-    if (isset($_GET['id'])) {
         // Fetch the 'id' value from the URL
-        $id = $_GET['id'];
+        // $id = $_GET['id'];
 
         // Fetch the data from the database
         require_once 'connect.php';
@@ -103,9 +104,7 @@ foreach ($items2 as $index => $item) {
     echo '<img src="' . $item['Photo'] . '" alt="' . $item['DescriptionComplete'] . '">';
     echo '</div>';
 }       
-    } else {
-        header('Location: connexion.php');
-    }
+   
 ?>
     </div>
 </body>

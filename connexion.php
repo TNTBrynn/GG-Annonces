@@ -1,3 +1,15 @@
+<style>
+    .bouton {
+        background-color: #FF63E9;
+        width:73%;
+        margin-bottom: 10px;
+        color:white;
+        padding: 10px 20px;
+        border-radius: 5px; 
+        border: none;
+    }
+</style>
+
 <?php
 session_start();
 require_once ("Ressources.php");
@@ -6,8 +18,8 @@ require_once ('connect.php');
 
 $_SESSION["Courriel"] = null;
 
-$_SESSION["Nom"] = null;
-$_SESSION["Prenom"] = null;
+$_SESSION["Nom"] = 'null';
+$_SESSION["Prenom"] = 'null';
 
 //quand bouton est clické
 if (isset($_POST['bouton'])) {
@@ -19,7 +31,7 @@ if (isset($_POST['bouton'])) {
 
         //vérifie si le courriel match le regex
         if (preg_match($exprReg, $email) == 1) {
-            $_SESSION["Courriel"] = $_POST['email'];
+            $_SESSION["Courriel"] = $email;
 
             $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email AND `MotDePasse` = :mdp";
             $query = $db->prepare($sql);
@@ -49,8 +61,8 @@ if (isset($_POST['bouton'])) {
 
                 if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
                     //envoie nom et prenom dans la table utilisateur
-                    $nom = strip_tags($_POST['Nom']);
-                    $prenom = strip_tags($_POST['Prenom']);
+                    $nom = $_SESSION["Nom"];
+                    $prenom = $_SESSION["Prenom"];
 
                     $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
                     $query = $db->prepare($sql);
@@ -58,7 +70,7 @@ if (isset($_POST['bouton'])) {
                     $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
                     $query->execute();
 
-                    // header('Location: annonces.php');
+                    header('Location: annonces.php');
                 } else {
                     //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
                     header('Location: profil.php');
@@ -77,12 +89,6 @@ if (isset($_POST['bouton'])) {
 
 require_once ('close.php');
 ?>
-
-
-<!-- .btn {
-            background - color: #FF63E9;
-        }
- -->
 
 <br>
 
@@ -110,7 +116,7 @@ require_once ('close.php');
                 </div>
             </div>
         </div>
-        <input type="submit" value="Connexion" class="btn btn-primary col-md-12" id="btnConnexion" name="bouton">
+        <input type="submit" value="Connexion" class="bouton col-md-12" id="btnConnexion" name="bouton">
     </form>
 </div>
 
