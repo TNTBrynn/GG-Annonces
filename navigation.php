@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html>
-
 <head>
-  <title>
-    Projet 03 par Gregory, Léa, Marilyn et Simon
-  </title>
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="">
   <?php require_once ('Ressources.php'); ?>
-
 </head>
 
 <body>

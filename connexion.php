@@ -64,14 +64,17 @@ if (isset($_POST['bouton'])) {
                 echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
             }
         } else {
+            //header('Location: connexion.php');
             echo '<script>alert("Veuillez remplir tous les champs")</script>';
         }
     } else {
+        //header('Location: connexion.php');
         echo '<script>alert("Veuillez remplir tous les champs")</script>';
     }
-} else
+} else {
     $_SESSION["Courriel"] = null;
-
+    echo 'btnConnexion marche pas';
+}
 require_once ('close.php');
 ?>
 

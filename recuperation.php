@@ -34,7 +34,7 @@ if (isset($_POST['btnEnvoyer'])) {
                     $mail->Host = 'smtp.gmail.com;';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'projetweb3glms@gmail.com';
-                    $mail->Password = 'vfxx cume yjgk qpt';
+                    $mail->Password = 'ywoa afae aktr rxfx';
                     $mail->SMTPSecure = 'tls';
                     $mail->Port = 587;
 
@@ -63,16 +63,6 @@ if (isset($_POST['btnEnvoyer'])) {
 
 require_once ('close.php');
 ?>
-<!-- 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnEnvoyer").click(function () {
-            var message = document.getElementsByClassName("text");
-            console.log(message);
-            //message.className = 'invisible';
-        });
-    });
-</script> -->
 
 <br>
 
