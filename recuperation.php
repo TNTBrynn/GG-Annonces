@@ -34,7 +34,7 @@ if (isset($_POST['btnEnvoyer'])) {
                     $mail->Host = 'smtp.gmail.com;';
                     $mail->SMTPAuth = true;
                     $mail->Username = 'projetweb3glms@gmail.com';
-                    $mail->Password = 'ywoa afae aktr rxfx';
+                    $mail->Password = 'vfxx cume yjgk qptx';
                     $mail->SMTPSecure = 'tls';
                     $mail->Port = 587;
 
