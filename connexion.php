@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once ("navigation.php");
+require_once ("navigationConn.php");
 require_once ('connect.php');
 
 $_SESSION["Courriel"] = null;
