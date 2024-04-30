@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Retrieve the user information from the database or any other data source
+// Retrieve the user information from the database
 
 require_once("connect.php");
 

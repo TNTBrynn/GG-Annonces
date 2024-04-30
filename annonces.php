@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<?php
+$email = $_GET['email'];
+
+$sql = "SELECT * FROM utilisateurs WHERE Courriel = :email";
+$stmt = $db->prepare($sql);
+$stmt->execute([':id' => $id]);
+
+if ($stmt->rowCount() > 0) {
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (empty($row['Prenom']) || empty($row['Nom'])) {
+        header("Location: profil.php?id=$id");
+        exit;
+    }
+}
+?>
     <title>Annonces GG GMLS</title>
     <style>
 
