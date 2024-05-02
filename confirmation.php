@@ -71,7 +71,6 @@ require_once("navigation.php");
     // Get the parameter value
     $origin = isset($_GET['origin']) ? $_GET['origin'] : '';
 
-    // Au lieu de faire des if just fait le code de la page et remplece au endroit approprier les mot afficher(là avec des if)
     ?>
     <div class="confirm">
 
