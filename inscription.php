@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <?php
-      require_once "navigation.php";
+      require_once "navigationConn.php";
+      require_once "Ressources.php";
   ?>
 
 <script>
@@ -14,6 +15,36 @@
           }
       });
   });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnEnvoyer").click(function () {
+            var exprReg = /^$/ ///^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i;
+            var strEmail = $("#tbEmail").val();
+
+            if (exprReg.test(strEmail) == true)
+                alert("Veuillez remplir tous les champs");
+            else {
+                $.ajax({
+                    url: 'traitement_inscription.php',
+                    type: 'post',
+                    data: {
+                        email: strEmail
+                    },
+                    success: function (response) {
+                        if (response === 'success') {
+                            alert("Le courriel a été envoyé avec succès!");
+                        } else if (response === 'nosuccess') {
+                            alert("Le courriel n'a pas pu être envoyé.");
+                        } else {
+                            alert(response);
+                        }
+                    }
+                });
+            }
+        });
+    });
 </script>
 
   <title>Inscription</title>
@@ -49,16 +80,27 @@
       </form>
     </div>
 
-  <?php
-      if($_SERVER["REQUEST_METHOD"] == "POST") {
+    <?php
+    try{
+        // Connexion à la bdd
+        $db = new PDO('mysql:host=mysql-progweb.alwaysdata.net;dbname=progweb_pjf_glms', 'progweb','ProjetWeb3');
+        $db->exec('SET NAMES "UTF8"');
+    } catch (PDOException $e){
+        echo 'Erreur : '. $e->getMessage();
+        die();
+    }
+?>
+<?php
+    if($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
-        require_once "connexionBD.php";
-        $sql = "INSERT INTO user (email, password) VALUES ('$email', '$password')";
-        $result = mysqli_query($cBD, $sql);
-        
-        header("Location: inscriptionConfirmee.php");
-      }
-      require_once "footer.php";
-  ?>
+
+        $sql = "INSERT INTO utilisateurs (Courriel, MotDePasse) VALUES (:email, :password)";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':email' => $email, ':password' => $password]);
+
+        header("Location: connexion.php");
+    }
+    require_once "footer.php";
+?>
 </html>

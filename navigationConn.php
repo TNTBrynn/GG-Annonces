@@ -33,7 +33,7 @@
 <body>
     <div class="navbar">
         <!-- Contenu de la barre de navigation -->
-        <a class="connex" href="annonces.php?id=">Inscription</a>
+        <a class="connex" href="inscription.php">Inscription</a>
         <a class="connex" href="connexion.php">Connexion</a>
     </div>
 </body>
