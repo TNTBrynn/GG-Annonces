@@ -11,17 +11,16 @@ session_start();
     <title>Créer BD</title>
     <?php
     require_once ("Ressources.php");
-    require_once ("Navigation.php");
+    // require_once ("navigation.php");
     $binCreer = false
         ?>
 </head>
 
 <body>
+    <form method="post" id="frmSaisie">
+        <button type="submit" name="btnCreerBD" class="btn btn-primary" value="true">Créer la Base de Données</button>
+    </form>
 </body>
-<form method="post" id="frmSaisie">
-    <button type="submit" name="btnCreerBD" class="btn btn-primary" value="true">Créer la Base de Données</button>
-</form>
-
 </html>
 <?php
 //email: 2044087@cgodin.qc.ca
