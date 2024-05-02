@@ -39,6 +39,7 @@
         <a class="connex" href="profil.php">Profil</a>
         <a class="connex" href="annonces.php">Vos annonces</a>
         <a class="connex" href="annonces.php">Annonces GG</a>
+        <a class="connex" href="deconnexion.php">Déconnexion</a>
     </div>
 </body>
 </html>
