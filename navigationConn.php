@@ -34,7 +34,7 @@
     <div class="navbar">
         <!-- Contenu de la barre de navigation -->
         <a class="connex" href="annonces.php?id=">Inscription</a>
-        <a class="connex" href="annonces.php">Connexion</a>
+        <a class="connex" href="connexion.php">Connexion</a>
     </div>
 </body>
 </html>
