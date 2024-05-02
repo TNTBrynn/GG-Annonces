@@ -11,84 +11,42 @@
 </style>
 
 <?php
-session_start();
 require_once ("Ressources.php");
 require_once ("navigationConn.php");
-require_once ('connect.php');
-
-$_SESSION["Courriel"] = null;
-
-$_SESSION["Nom"] = 'null';
-$_SESSION["Prenom"] = 'null';
-
-//quand bouton est clické
-if (isset($_POST['bouton'])) {
-    //quand boutton est clické et que le email et mdp sont remplis
-    if (isset($_POST['email']) && isset($_POST['password']) && !empty($_POST['email']) && !empty($_POST['password'])) {
-        $exprReg = '/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i';
-        $email = strip_tags($_POST['email']);
-        $mdp = strip_tags($_POST['password']);
-
-        //vérifie si le courriel match le regex
-        if (preg_match($exprReg, $email) == 1) {
-            $_SESSION["Courriel"] = $email;
-
-            $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email AND `MotDePasse` = :mdp";
-            $query = $db->prepare($sql);
-            $query->bindValue(':email', $email, PDO::PARAM_STR);
-            $query->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-            $query->execute();
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($result as $user) {
-                $idUtilisateur = $user['NoUtilisateur'];
-                $nbConnexion = $user['NbConnexions'] + 1;
-            }
-            if ($result) {
-                //envoie date/heure et nb de connexions dans la table connexions
-                $sql = "UPDATE `utilisateurs` SET `NbConnexions`=:nbConnexion WHERE `NoUtilisateur`=:idUtilisateur;";
-                $query = $db->prepare($sql);
-                $query->bindValue(':nbConnexion', $nbConnexion, PDO::PARAM_STR);
-                $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
-                $query->execute();
-
-                $dateHeure = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO `connexions` (`Connexion`, `NoUtilisateur`) VALUES (:dateHeure, :idUtilisateur);";
-                $query = $db->prepare($sql);
-                $query->bindValue(':dateHeure', $dateHeure, PDO::PARAM_STR);
-                $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
-                $query->execute();
-
-                if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
-                    //envoie nom et prenom dans la table utilisateur
-                    $nom = $_SESSION["Nom"];
-                    $prenom = $_SESSION["Prenom"];
-
-                    $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
-                    $query = $db->prepare($sql);
-                    $query->bindValue(':nom', $nom, PDO::PARAM_STR);
-                    $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-                    $query->execute();
-
-                    header('Location: annonces.php');
-                } else {
-                    //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
-                    header('Location: profil.php');
-                }
-            } else {
-                echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
-            }
-        } else {
-            echo '<script>alert("Veuillez remplir tous les champs")</script>';
-        }
-    } else {
-        echo '<script>alert("Veuillez remplir tous les champs")</script>';
-    }
-} else
-    $_SESSION["Courriel"] = null;
-
-require_once ('close.php');
 ?>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnConnexion").click(function () {
+            var exprReg = /^$/ ///^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i;
+            var strEmail = $("#tbEmail").val();
+            var strMDP = $("#tbMDP").val();
+
+            if (exprReg.test(strEmail) == true || exprReg.test(strMDP) == true)
+                alert("Veuillez remplir tous les champs");
+            else {
+                $.ajax({
+                    url: 'traitement_connexion.php',
+                    type: 'post',
+                    data: {
+                        email: strEmail,
+                        password: strMDP
+                    },
+                    success: function (response) {
+                        if (response === 'annonces') {
+                            window.location.href = 'annonces.php';
+                        } else if (response === 'profil') {
+                            window.location.href = 'profil.php';
+                        } else {
+                            alert(response);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 <br>
 
@@ -116,7 +74,7 @@ require_once ('close.php');
                 </div>
             </div>
         </div>
-        <input type="submit" value="Connexion" class="bouton col-md-12" id="btnConnexion" name="bouton">
+        <input type="submit" value="Connexion" class="bouton col-md-12" id="btnConnexion" name="btnConnexion">
     </form>
 </div>
 

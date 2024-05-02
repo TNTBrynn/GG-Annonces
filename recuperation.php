@@ -1,68 +1,37 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require 'vendor/autoload.php';
-
-require_once ("navigation.php");
-require_once ('connect.php');
-
-//quand bouton est clické
-if (isset($_POST['btnEnvoyer'])) {
-    //quand boutton est clické et que le email est rempli
-    if (isset($_POST['email']) && !empty($_POST['email'])) {
-        $exprReg = '/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i';
-        $email = strip_tags($_POST['email']);
-
-        //vérifie si le courriel match le regex
-        if (preg_match($exprReg, $email) == 1) {
-
-            $sql = "SELECT `MotDePasse` FROM `utilisateurs` WHERE `Courriel` = :email";
-            $query = $db->prepare($sql);
-            $query->bindValue(':email', $email, PDO::PARAM_STR);
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                //envoyer le mdp au courriel
-                $mdpUtilisateur = $result['MotDePasse'];
-                $mail = new PHPMailer(true);
-
-                try {
-                    $mail->SMTPDebug = 2;
-                    $mail->isSMTP();
-                    $mail->Host = 'smtp.gmail.com;';
-                    $mail->SMTPAuth = true;
-                    $mail->Username = 'projetweb3glms@gmail.com';
-                    $mail->Password = 'vfxx cume yjgk qptx';
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port = 587;
-
-                    $mail->setFrom('projetweb3glms@gmail.com', 'Projet Web 3');
-                    $mail->addAddress($email);
-
-                    $mail->isHTML(true);
-                    $mail->Subject = 'Recuperation du mot de passe';
-                    $mail->Body = '<b>Recuperation du mot de passe pour Les petites annonces GG</b> <br>Voici votre mot de passe : ' . $mdpUtilisateur;
-                    $mail->send();
-                    echo "Le courriel a été envoyé avec succès!";
-                } catch (Exception $e) {
-                    echo "Le courriel n'a pas pu être envoyé. Mailer Error: {$mail->ErrorInfo}";
-                }
-
-            } else {
-                echo '<script>alert("Aucun utilisateur trouvé, veuillez vous inscrire")</script>';
-            }
-        } else {
-            echo '<script>alert("Veuillez remplir tous les champs")</script>';
-        }
-    } else {
-        echo '<script>alert("Veuillez remplir tous les champs")</script>';
-    }
-}
-
-require_once ('close.php');
+require_once ("navigationConn.php");
+require_once ("Ressources.php");
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnEnvoyer").click(function () {
+            var exprReg = /^$/ ///^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/i;
+            var strEmail = $("#tbEmail").val();
+
+            if (exprReg.test(strEmail) == true)
+                alert("Veuillez remplir tous les champs");
+            else {
+                $.ajax({
+                    url: 'traitement_recuperation.php',
+                    type: 'post',
+                    data: {
+                        email: strEmail
+                    },
+                    success: function (response) {
+                        if (response === 'success') {
+                            alert("Le courriel a été envoyé avec succès!");
+                        } else if (response === 'nosuccess') {
+                            alert("Le courriel n'a pas pu être envoyé.");
+                        } else {
+                            alert(response);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
 
 <br>
 
