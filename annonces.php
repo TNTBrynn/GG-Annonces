@@ -3,8 +3,8 @@
 <head>
 
 <?php
-require_once('connect.php');
 session_start();
+require_once('connect.php');
 $email = $_SESSION['Courriel'];
 
 $sql = "SELECT * FROM utilisateurs WHERE Courriel = :Courriel";

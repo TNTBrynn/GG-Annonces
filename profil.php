@@ -59,6 +59,7 @@
     }
 </style>
 <?php
+require_once("connect.php");
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the updated user information from the form
@@ -75,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // TODO: Update the user information in the database or perform any other necessary actions
 
-    require_once("connect.php");
 
     try {
         $sql = "UPDATE utilisateurs SET Statut = :statut, NoEmpl = :noEmp, Nom = :nom, Prenom = :prenom, Courriel = :email, MotDePasse = :mdp, NoTelMaison = :telM, NoTelTravail = :telT, NoTelCellulaire = :cell WHERE NoUtilisateur = :id";

@@ -12,6 +12,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     $email = strip_tags($_POST['email']);
     $mdp = strip_tags($_POST['password']);
 
+    //Stocke le courriel dans la varaible de session
     $_SESSION["Courriel"] = $email;
 
     $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email AND `MotDePasse` = :mdp";
@@ -41,10 +42,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $query->execute();
 
         if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
-            //envoie nom et prenom dans la table utilisateur
+            //Stocke le nom et prenom dans des variables de session
             $nom = $_SESSION["Nom"];
             $prenom = $_SESSION["Prenom"];
-
+            
+            //envoie nom et prenom dans la table utilisateur
             $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
             $query = $db->prepare($sql);
             $query->bindValue(':nom', $nom, PDO::PARAM_STR);
