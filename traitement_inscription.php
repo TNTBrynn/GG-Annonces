@@ -2,10 +2,10 @@
 session_start();
 require_once ('connect.php');
 
-$_SESSION["Courriel"] = null;
+// $_SESSION["Courriel"] = null;
 
-$_SESSION["Nom"] = 'null';
-$_SESSION["Prenom"] = 'null';
+// $_SESSION["Nom"] = 'null';
+// $_SESSION["Prenom"] = 'null';
 
 //vérifie que le email et mdp ont bien été reçus en POST
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -14,54 +14,36 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 
     $_SESSION["Courriel"] = $email;
 
-    $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email AND `MotDePasse` = :mdp";
+    // Vérifie si le courriel est déja enregistré dans la base de données
+    $sql = "SELECT * FROM `utilisateurs` WHERE `Courriel` = :email";
     $query = $db->prepare($sql);
     $query->bindValue(':email', $email, PDO::PARAM_STR);
-    $query->bindValue(':mdp', $mdp, PDO::PARAM_STR);
     $query->execute();
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($result as $user) {
-        $idUtilisateur = $user['NoUtilisateur'];
-        $nbConnexion = $user['NbConnexions'] + 1;
-    }
-    if ($result) {
-        //envoie date/heure et nb de connexions dans la table connexions
-        $sql = "UPDATE `utilisateurs` SET `NbConnexions`=:nbConnexion WHERE `NoUtilisateur`=:idUtilisateur;";
-        $query = $db->prepare($sql);
-        $query->bindValue(':nbConnexion', $nbConnexion, PDO::PARAM_STR);
-        $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
-        $query->execute();
-
-        $dateHeure = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO `connexions` (`Connexion`, `NoUtilisateur`) VALUES (:dateHeure, :idUtilisateur);";
-        $query = $db->prepare($sql);
-        $query->bindValue(':dateHeure', $dateHeure, PDO::PARAM_STR);
-        $query->bindValue(':idUtilisateur', $idUtilisateur, PDO::PARAM_STR);
-        $query->execute();
-
-        if (isset($_SESSION["Nom"]) && isset($_SESSION["Prenom"])) {
-            //envoie nom et prenom dans la table utilisateur
-            $nom = $_SESSION["Nom"];
-            $prenom = $_SESSION["Prenom"];
-
-            $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
-            $query = $db->prepare($sql);
-            $query->bindValue(':nom', $nom, PDO::PARAM_STR);
-            $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-            $query->execute();
-
-            echo 'annonces';
-
-        } else {
-            //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
-            echo 'profil';
-        }
+    if (!empty($result)) {
+        // Des résultats ont été trouvés, le courriel est déjà enregistré
+        echo "nosuccess";
     } else {
-        echo 'Aucun utilisateur trouvé, veuillez vous inscrire';
+        //Le courriel n'existe pas dans la base de données, on crée un nouvel utilisateur
+        $dateCreation = date("Y-m-d H:i:s");
+        $nbConnexions = 0;
+        $statut = 0;
+
+        $sql = "INSERT INTO `utilisateurs` (`Courriel`, `MotDePasse`, `Creation`, `NbConnexions`, `Statut`) VALUES (:email, :password, :dateCreation, :nbConnexions, :statut);";
+        $query = $db->prepare($sql);
+        $query->bindValue(':email', $email, PDO::PARAM_STR);
+        $query->bindValue(':password', $mdp, PDO::PARAM_STR);
+        $query->bindValue(':dateCreation', $dateCreation, PDO::PARAM_STR);
+        $query->bindValue(':nbConnexions', $nbConnexions, PDO::PARAM_INT);
+        $query->bindValue(':statut', $statut, PDO::PARAM_INT);
+
+        $query->execute();
+        
+        echo "success";
     }
 } else {
-    echo 'Veuillez remplir tous les champs 2';
+    echo 'Veuillez remplir tous les champs';
 }
 
 require_once ('close.php');

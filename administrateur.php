@@ -1,53 +1,19 @@
 <style>
     .bouton {
         background-color: #FF63E9;
-        width: 73%;
+        width:73%;
         margin-bottom: 10px;
-        color: white;
+        color:white;
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 5px; 
         border: none;
     }
 </style>
 
 <?php
 require_once ("Ressources.php");
-require_once ("navigationConn.php");
+require_once ("navigationAdmin.php");
 ?>
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnConnexion").click(function () {
-            var exprRegEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]{3}$/;
-            var exprRegMDP = /^[a-z0-9]{5,15}$/;
-            var strEmail = $("#tbEmail").val();
-            var strMDP = $("#tbMDP").val();
-
-            if (exprRegEmail.test(strEmail) == false || exprRegMDP.test(strMDP) == false)
-                alert("Veuillez remplir tous les champs");
-            else {
-                $.ajax({
-                    url: 'traitement_connexion.php',
-                    type: 'post',
-                    data: {
-                        email: strEmail,
-                        password: strMDP
-                    },
-                    success: function (response) {
-                        if (response === 'annonces') {
-                            window.location.href = 'annonces.php';
-                        } else if (response === 'profil') {
-                            window.location.href = 'profil.php';
-                        } else {
-                            alert(response);
-                        }
-                    }
-                });
-            }
-        });
-    });
-</script>
 
 <br>
 

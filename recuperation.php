@@ -1,3 +1,14 @@
+<style>
+    .bouton {
+        background-color: #FF63E9;
+        width:73%;
+        margin-bottom: 10px;
+        color:white;
+        padding: 10px 20px;
+        border-radius: 5px; 
+        border: none;
+    }
+</style>
 <?php
 require_once ("navigationConn.php");
 require_once ("Ressources.php");
@@ -48,7 +59,7 @@ require_once ("Ressources.php");
             <div class="invalid-feedback">Veuillez entrer votre Courriel</div>
         </div>
 
-        <input type="submit" value="Envoyer" class="btn btn-primary col-md-12" id="btnEnvoyer" name="btnEnvoyer">
+        <input type="submit" value="Envoyer" class="bouton col-md-12" id="btnEnvoyer" name="btnEnvoyer">
     </form>
 </div>
 
