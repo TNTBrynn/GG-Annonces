@@ -4,8 +4,8 @@ require_once ('connect.php');
 
 $_SESSION["Courriel"] = null;
 
-$_SESSION["Nom"] = 'null';
-$_SESSION["Prenom"] = 'null';
+// $_SESSION["Nom"] = 'null';
+// $_SESSION["Prenom"] = 'null';
 
 //vérifie que le email et mdp ont bien été reçus en POST
 if (isset($_POST['email']) && isset($_POST['password'])) {
