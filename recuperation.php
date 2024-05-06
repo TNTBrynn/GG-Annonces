@@ -35,7 +35,7 @@ require_once ("Ressources.php");
                         } else if (response === 'nosuccess') {
                             alert("Le courriel n'a pas pu être envoyé.");
                         } else {
-                            alert(response);
+                            //alert(response);
                         }
                     }
                 });
