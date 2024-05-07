@@ -11,6 +11,7 @@
 </style>
 
 <?php
+session_start();
 require_once "navigationConn.php";
 require_once "Ressources.php";
 ?>

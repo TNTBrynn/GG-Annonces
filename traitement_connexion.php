@@ -52,11 +52,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             $query->bindValue(':nom', $nom, PDO::PARAM_STR);
             $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
             $query->execute();
-
+            $_SESSION['Courriel'] = $_POST['email'];
+            $_SESSION['session'] = session_id();
             echo 'annonces';
 
         } else {
             //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
+            $_SESSION['Courriel'] = $_POST['email'];
+            $_SESSION['session'] = session_id();
             echo 'profil';
         }
     } else {

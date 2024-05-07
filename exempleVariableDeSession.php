@@ -3,10 +3,7 @@
 session_start();
 //On vérifie si la session et sa variables existe (Dans ce cas-ci on verifie si ce n'est pas le cas, pour ensuite le rediriger vers la page de connexion)
 //On vérifie aussi si la variable de session est égale (pas égale dans ce cas) à la valeur de session_id(). Pour nous ce sera l'adresse courriel fournie avec POST que nous allons vérifier
-if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
-    //On redirige vers la page de connexion si la session n'existe pas ou si la session n'est pas égale à la session_id()
-    header('Location: ../connexion.php');
-} else { //Si la session existe et est égale à la session_id() alors on affiche le contenu de la page et on traite les données
+C //Si la session existe et est égale à la session_id() alors on affiche le contenu de la page et on traite les données
 
     // On inclut la connexion à la base
     require_once('../connect.php');

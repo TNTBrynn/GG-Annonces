@@ -46,7 +46,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $query->bindValue(':statut', $statut, PDO::PARAM_INT);
 
         $query->execute();
-
+        $_SESSION('Courriel') = $_POST['email'];
+        $_SESSION('session') = session_id();
         echo "success";
         $success = true;
     }
