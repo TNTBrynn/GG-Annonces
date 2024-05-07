@@ -66,7 +66,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         echo 'Aucun utilisateur trouvé, veuillez vous inscrire';
     }
 } else {
-    echo 'Veuillez remplir tous les champs 2';
+    echo 'Veuillez remplir tous les champs';
 }
 
 require_once ('close.php');

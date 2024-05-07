@@ -92,15 +92,12 @@ require_once "Ressources.php";
 
 <div id="confirmation" class="container col-md-6 jumbotron" style="display : none">
     <h2 class="text-center">Inscription</h2>
-    <form id="formInscription" method="POST" action="">
-        <div class="form-row">
-            <div class="text-center col-md-12">
-                <h4>Un courriel vous a été envoyé pour confirmer votre inscription!</h4>
-                <a href="connexion.php">Connectez vous dès maintenant</a>
-            </div>
+    <div class="form-row">
+        <div class="text-center col-md-12">
+            <h4>Un courriel vous a été envoyé pour confirmer votre inscription!</h4>
+            <a href="connexion.php">Connectez vous dès maintenant</a>
         </div>
-
-    </form>
+    </div>
 </div>
 
 <?php
