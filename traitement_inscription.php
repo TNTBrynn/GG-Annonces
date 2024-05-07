@@ -1,11 +1,18 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+
 session_start();
+
 require_once ('connect.php');
 
 // $_SESSION["Courriel"] = null;
 
 // $_SESSION["Nom"] = 'null';
 // $_SESSION["Prenom"] = 'null';
+$success = false;
 
 //vérifie que le email et mdp ont bien été reçus en POST
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -39,11 +46,40 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $query->bindValue(':statut', $statut, PDO::PARAM_INT);
 
         $query->execute();
-        
+
         echo "success";
+        $success = true;
     }
 } else {
     echo 'Veuillez remplir tous les champs';
+}
+
+
+if ($success) {
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->SMTPDebug = 2;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com;';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'projetweb3glms@gmail.com';
+        $mail->Password = 'elmg lfae ccyw tbom';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('projetweb3glms@gmail.com', 'Projet Web 3');
+        $mail->addAddress($email);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Confirmation d\'inscription';
+        $mail->Body = '<b>Confirmation d\'inscription pour Les petites annonces GG</b> <br>Voici le lien a suivre : <br>
+        <a href="http://localhost:3000/traitement_confirmation_inscription.php?email=' . $email . '">Confirmer votre compte!</a>';
+        $mail->send();
+
+    } catch (Exception $e) {
+        echo "Mailer Error: {$mail->ErrorInfo}";
+    }
 }
 
 require_once ('close.php');

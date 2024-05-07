@@ -43,14 +43,11 @@ require_once "Ressources.php";
                         password: strMDP
                     },
                     success: function (response) {
-                        if (response === 'success') {
-                            alert("Le nouvel utilisateur a été créer avec succès!");
-                            document.getElementById("confirmation").style.display = "block";
-                            document.getElementById("inscription").style.display = "none";
-                        } else if (response === 'nosuccess') {
+                        if (response === 'nosuccess') {
                             alert("Ce courriel est déja enregistré. Veuillez vous connecter.");
                         } else {
-                            alert(response);
+                            document.getElementById("confirmation").style.display = "block";
+                            document.getElementById("inscription").style.display = "none";
                         }
                     }
                 });
