@@ -23,35 +23,20 @@ LIMIT 5
 ) AS connexions ON utilisateurs.NoUtilisateur = connexions.NoUtilisateur
 LEFT JOIN annonces ON utilisateurs.NoUtilisateur = annonces.NoUtilisateur
 GROUP BY utilisateurs.NoUtilisateur
-ORDER BY utilisateurs.Nom, utilisateurs.Prenom"
-    /*"SELECT utilisateurs.*,
-    GROUP_CONCAT(connexions.Connexion ORDER BY connexions.Connexion DESC SEPARATOR ', ') AS DernieresConnexions,
-    COUNT(CASE WHEN annonces.Etat = 1 THEN 1 END) AS AnnoncesActives,
-    COUNT(CASE WHEN annonces.Etat = 2 THEN 1 END) AS AnnoncesInactives,
-    COUNT(CASE WHEN annonces.Etat = 3 THEN 1 END) AS AnnoncesRetirees
-    FROM utilisateurs
-    LEFT JOIN connexions ON utilisateurs.NoUtilisateur = connexions.NoUtilisateur
-    LEFT JOIN annonces ON utilisateurs.NoUtilisateur = annonces.NoUtilisateur
-    GROUP BY utilisateurs.NoUtilisateur
-    ORDER BY utilisateurs.Nom, utilisateurs.Prenom
-    "*/ ;
+ORDER BY utilisateurs.Nom, utilisateurs.Prenom";
 
-//$sql = 'SELECT * FROM `utilisateurs` ORDER BY `Nom` AND `Prenom`';
 $query = $db->prepare($sql);
 $query->execute();
 $resultUtilisateurs = $query->fetchAll(PDO::FETCH_ASSOC);
 
 require_once ('close.php');
 
-$intNbActive = 0;
-$intNbInactive = 0;
-$intNbRetire = 0;
-
 ?>
 
-<br>
+<br><br>
 <h1 class="text-center">Affichage de tous les utilisateurs</h1>
-<br>
+<br><br>
+
 
 <div class="container-fluid">
     <div class="">

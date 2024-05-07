@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Menu Principal</title>
+    <title>Module administrateur</title>
     <style>
-
         body {
             margin: 0;
             padding: 0;
@@ -36,7 +35,7 @@
 ?>
     <div class="navbar">
         <!-- Contenu de la barre de navigation -->
-        <a class="connex" href="annonces.php">Annonces GG</a> <!-- à revoir -->
+        <a class="connex" href="administrateur.php">Annonces GG</a>
         <a class="connex" href="utilisateurs.php">Utilisateurs</a>
         <a class="connex" href="nettoyageBD.php">Nettoyage</a>
         <a class="connex" href="deconnexion.php">Déconnexion</a>

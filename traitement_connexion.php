@@ -45,19 +45,30 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             //Stocke le nom et prenom dans des variables de session
             $nom = $_SESSION["Nom"];
             $prenom = $_SESSION["Prenom"];
-            
+
             //envoie nom et prenom dans la table utilisateur
             $sql = "INSERT INTO `utilisateurs` (`Nom`, `Prenom`) VALUES (:nom, :prenom);";
             $query = $db->prepare($sql);
             $query->bindValue(':nom', $nom, PDO::PARAM_STR);
             $query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
             $query->execute();
+            $_SESSION['Courriel'] = $_POST['email'];
+            $_SESSION['session'] = session_id();
 
-            echo 'annonces';
+            if ($_SESSION['Courriel'] == 'admin@gmail.com')
+                echo 'admin';
+            else
+                echo 'annonces';
 
         } else {
             //si aucun nom et prenom est défini (nouveau compte), renvoie l'utilisateur à Profil utilisateur
-            echo 'profil';
+            $_SESSION['Courriel'] = $_POST['email'];
+            $_SESSION['session'] = session_id();
+
+            if ($_SESSION['Courriel'] == 'admin@gmail.com')
+                echo 'admin';
+            else
+                echo 'profil';
         }
     } else {
         echo 'Aucun utilisateur trouvé, veuillez vous inscrire';
