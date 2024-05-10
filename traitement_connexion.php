@@ -1,4 +1,4 @@
-<?php
+0<?php
 session_start();
 require_once ('connect.php');
 
