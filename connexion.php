@@ -19,8 +19,8 @@ require_once ("navigationConn.php");
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnConnexion").click(function () {
-            var exprRegEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]{3}$/;
-            var exprRegMDP = /^[a-z0-9]{5,15}$/;
+            var exprRegEmail = /^[a-z0-9.]*@[a-z]+\.[a-z]{3}$/i;
+            var exprRegMDP = /^[a-z0-9]{5,15}$/i;
             var strEmail = $("#tbEmail").val();
             var strMDP = $("#tbMDP").val();
 

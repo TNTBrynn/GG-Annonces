@@ -4,8 +4,8 @@ require_once ('connect.php');
 
 $_SESSION["Courriel"] = null;
 
-$_SESSION["Nom"] = 'null';
-$_SESSION["Prenom"] = 'null';
+// $_SESSION["Nom"] = 'null';
+// $_SESSION["Prenom"] = 'null';
 
 //vérifie que le email et mdp ont bien été reçus en POST
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -74,7 +74,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         echo 'Aucun utilisateur trouvé, veuillez vous inscrire';
     }
 } else {
-    echo 'Veuillez remplir tous les champs 2';
+    echo 'Veuillez remplir tous les champs';
 }
 
 require_once ('close.php');

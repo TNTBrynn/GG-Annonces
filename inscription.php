@@ -11,6 +11,7 @@
 </style>
 
 <?php
+session_start();
 require_once "navigationConn.php";
 require_once "Ressources.php";
 ?>
@@ -18,8 +19,8 @@ require_once "Ressources.php";
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnInscription").click(function () {
-            var exprRegEmail = /^[a-zA-Z0-9]+@[a-zA-Z]+\.[a-zA-Z]{3}$/;
-            var exprRegMDP = /^[a-z0-9]{5,15}$/;
+            var exprRegEmail = /^[a-z0-9.]*@[a-z]+\.[a-z]{3}$/i;
+            var exprRegMDP = /^[a-z0-9]{5,15}$/i;
 
             var strEmail = $("#tbEmail").val();
             var strConfirmEmail = $("#tbConfirmEmail").val();
@@ -43,14 +44,11 @@ require_once "Ressources.php";
                         password: strMDP
                     },
                     success: function (response) {
-                        if (response === 'success') {
-                            alert("Le nouvel utilisateur a été créer avec succès!");
-                            document.getElementById("confirmation").style.display = "block";
-                            document.getElementById("inscription").style.display = "none";
-                        } else if (response === 'nosuccess') {
+                        if (response === 'nosuccess') {
                             alert("Ce courriel est déja enregistré. Veuillez vous connecter.");
                         } else {
-                            alert(response);
+                            document.getElementById("confirmation").style.display = "block";
+                            document.getElementById("inscription").style.display = "none";
                         }
                     }
                 });
@@ -94,15 +92,12 @@ require_once "Ressources.php";
 
 <div id="confirmation" class="container col-md-6 jumbotron" style="display : none">
     <h2 class="text-center">Inscription</h2>
-    <form id="formInscription" method="POST" action="">
-        <div class="form-row">
-            <div class="text-center col-md-12">
-                <h4>Un courriel vous a été envoyé pour confirmer votre inscription!</h4>
-                <a href="connexion.php">Connectez vous dès maintenant</a>
-            </div>
+    <div class="form-row">
+        <div class="text-center col-md-12">
+            <h4>Un courriel vous a été envoyé pour confirmer votre inscription!</h4>
+            <a href="connexion.php">Connectez vous dès maintenant</a>
         </div>
-
-    </form>
+    </div>
 </div>
 
 <?php

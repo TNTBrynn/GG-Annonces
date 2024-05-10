@@ -4,6 +4,10 @@
 
 <?php
 session_start();
+if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
+    //On redirige vers la page de connexion si la session n'existe pas ou si la session n'est pas égale à la session_id()
+    header('Location: ../connexion.php');
+} else {
 require_once('connect.php');
 $email = $_SESSION['Courriel'];
 
@@ -104,7 +108,7 @@ foreach ($items2 as $index => $item) {
     echo '<img src="' . $item['Photo'] . '" alt="' . $item['DescriptionComplete'] . '">';
     echo '</div>';
 }       
-   
+}
 ?>
     </div>
 </body>
