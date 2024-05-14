@@ -24,9 +24,18 @@
         }
 
         //Initialise la prochaine page et la page précédente
-        $page = intval($_GET['page']) ?? 1;
+        if (isset($_GET['page'])) {
+            $page = intval($_GET['page']);
+        } else {
+            $page = 1;
+        }
         $prevPage = max(1, $page - 1); // Ensure page doesn't go below 1
-        $nextPage = $page + 1;
+    
+        if (isset($_GET['limit'])) {
+            $limit = intval($_GET['limit']);
+        } else {
+            $_GET['limit'] = 10;
+        }
 
         // Check if the 'id' parameter is present in the URL
         // Fetch the 'id' value from the URL
@@ -53,6 +62,9 @@
             //Le nombre de page qui seront nécessaires
             $nbPages = ceil($count / intval($_GET['limit']));
 
+            $nextPage = min($nbPages, $page + 1);
+
+
             //Premier résultat de la page
             $premierResultat = ($page - 1) * intval($_GET['limit']);
 
@@ -68,7 +80,7 @@
                 $limit = intval($_GET['limit']);
                 $sql .= " LIMIT $premierResultat, $limit";
             } else {
-                $sql .= " LIMIT $premierResultat , 5";
+                $sql .= " LIMIT $premierResultat , 10";
             }
 
             $query = $db->prepare($sql);
@@ -80,12 +92,33 @@
                 INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
                 INNER JOIN `categories` C ON C.NoCategorie = A.Categorie";
 
+            //Inscrit le nombre d'annonce
+            $query = $db->prepare($sql);
+            $query->execute();
+            $count = $query->rowCount();
+            //Le nombre de page qui seront nécessaires
+            $nbPages = ceil($count / intval($_GET['limit']));
+
+            $nextPage = min($nbPages, $page + 1);
+
+            //Premier résultat de la page
+            $premierResultat = ($page - 1) * intval($_GET['limit']);
+
+            if (isset($_GET['orderBy'])) {
+                $orderBy = $_GET['orderBy'];
+                $sql .= " ORDER BY $orderBy";
+            }
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " $ordre";
+            }
             if (isset($_GET['limit'])) {
                 $limit = intval($_GET['limit']);
                 $sql .= " LIMIT $premierResultat, $limit";
             } else {
-                $sql .= " LIMIT $premierResultat , 5";
+                $sql .= " LIMIT $premierResultat , 10";
             }
+
             $query = $db->prepare($sql);
             $query->execute();
             $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -124,7 +157,10 @@
                 margin: 50px auto;
             }
         </style>
-        <?php require_once 'navigation.php'; ?>
+        <?php
+        require_once 'Ressources.php';
+        require_once 'navigation.php';
+        ?>
     </head>
 
     <body class="ok">
@@ -162,7 +198,6 @@
                     <button type="submit" name="page" value="<?= $prevPage; ?>">Page précédente</button>
                     <button type="submit" name="page" value="<?= $nextPage; ?>">Page suivante</button>
                 </div>
-            </form>
         </div>
 
         </div>
@@ -191,18 +226,23 @@
 <footer>
     <div class="text-center">
         <p>
-            <?php
-            for ($i = 1; $i <= $nbPages; $i++) {
-                if($i == $nbPages){
-                    echo "<a href='annonces.php?page=$i'>$i</a>";
-                }
-                else {
-                    echo "<a href='annonces.php?page=$i'> $i,</a>";
-                }
-            }
-            ?>
+            <button name="page" value="1"> << </button>
+                    <?php
+                    for ($i = 1; $i <= $nbPages; $i++) {
+                        ?>
+                        <button onclick="window.location.href='annonces.php?page=<?= $i ?>'" <?php if ($i == $page) {
+                              echo 'style="color: blue;"';
+                          } ?>>
+                            <?= $i ?></button>
+                        <?php
+                    }
+                    ?>
+            <button name="page" value="<?= $nbPages ?>"> >> </button>
         </p>
     </div>
+
 </footer>
+</form>
+<?php require_once 'footer.php'; ?>
 
 </html>
