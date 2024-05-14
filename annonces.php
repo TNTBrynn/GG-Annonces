@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <?php
     session_start();
@@ -7,12 +8,12 @@
         //On redirige vers la page de connexion si la session n'existe pas ou si la session n'est pas égale à la session_id()
         header('Location: ../connexion.php');
     } else {
-        require_once('connect.php');
+        require_once ('connect.php');
         $email = $_SESSION['Courriel'];
 
-        $sql = "SELECT * FROM utilisateurs WHERE Courriel = :Courriel";
+        $sql = "SELECT * FROM utilisateurs WHERE Courriel = :email";
         $stmt = $db->prepare($sql);
-        $stmt->execute([':Courriel' => $id]);
+        $stmt->execute([':email' => $email]);
 
         if ($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -21,7 +22,76 @@
                 exit;
             }
         }
-    ?>
+
+        //Initialise la prochaine page et la page précédente
+        $page = intval($_GET['page']) ?? 1;
+        $prevPage = max(1, $page - 1); // Ensure page doesn't go below 1
+        $nextPage = $page + 1;
+
+        // Check if the 'id' parameter is present in the URL
+        // Fetch the 'id' value from the URL
+    
+        // Fetch the data from the database
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+            $searchTerm = "%" . $search . "%";
+
+            $sql = "SELECT * FROM `annonces` A 
+            INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
+            INNER JOIN `categories` C ON C.NoCategorie = A.Categorie
+            WHERE A.DescriptionAbregee LIKE :searchTerm 
+            OR A.DescriptionComplete LIKE :searchTerm 
+            OR U.Nom LIKE :searchTerm  
+            OR U.Prenom LIKE :searchTerm  
+            OR C.Description LIKE :searchTerm";
+
+            //Inscrit le nombre d'annonce
+            $query = $db->prepare($sql);
+            $query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
+            $query->execute();
+            $count = $query->rowCount();
+            //Le nombre de page qui seront nécessaires
+            $nbPages = ceil($count / intval($_GET['limit']));
+
+            //Premier résultat de la page
+            $premierResultat = ($page - 1) * intval($_GET['limit']);
+
+            if (isset($_GET['orderBy'])) {
+                $orderBy = $_GET['orderBy'];
+                $sql .= " ORDER BY $orderBy";
+            }
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " $ordre";
+            }
+            if (isset($_GET['limit'])) {
+                $limit = intval($_GET['limit']);
+                $sql .= " LIMIT $premierResultat, $limit";
+            } else {
+                $sql .= " LIMIT $premierResultat , 5";
+            }
+
+            $query = $db->prepare($sql);
+            $query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
+            $query->execute();
+            $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $sql = "SELECT * FROM annonces A
+                INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
+                INNER JOIN `categories` C ON C.NoCategorie = A.Categorie";
+
+            if (isset($_GET['limit'])) {
+                $limit = intval($_GET['limit']);
+                $sql .= " LIMIT $premierResultat, $limit";
+            } else {
+                $sql .= " LIMIT $premierResultat , 5";
+            }
+            $query = $db->prepare($sql);
+            $query->execute();
+            $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+        ?>
+
         <title>Annonces GG GMLS</title>
         <style>
             .ok {
@@ -55,85 +125,84 @@
             }
         </style>
         <?php require_once 'navigation.php'; ?>
-</head>
+    </head>
 
-<body class="ok">
-    <h1>Annonces GG</h1>
-    <div>
-        <form method="get">
-            <input type="text" name="search" placeholder="Rechercher...">
-            <button type="submit">Rechercher</button>
-        </form>
-    </div>
-    <div class="grid-container">
-        <?php
-        // Check if the 'id' parameter is present in the URL
-        // Fetch the 'id' value from the URL
+    <body class="ok">
+        <h1>Annonces GG</h1>
+        <div>
+            <form method="get">
+                <input type="text" name="search" placeholder="Rechercher...">
+                <button type="submit">Rechercher</button>
+                <div>
+                    <!-- Tri par  date-->
+                    <input type="checkbox" name="orderBy" value="Parution">
+                    <label>Trier par date</label>
+                    <!-- Tri par Nom et Prenom de l'auteur -->
+                    <input type="checkbox" name="orderBy" value="Nom,Prenom">
+                    <label>Trier par auteur</label>
+                    <!-- Tri selon la catégorie -->
+                    <input type="checkbox" name="orderBy" value="Categorie">
+                    <label>Trier par catégorie</label>
+                    <!-- Tri ascendant ou descendant -->
+                    <input type="radio" name="ordre" value="ASC">
+                    <label>Ascendant</label>
+                    <input type="radio" name="ordre" value="DESC">
+                    <label>Descendant</label>
+                </div>
+                <div>
+                    <!-- Définir le nombre d'article par pages -->
+                    <select name="limit">
+                        <option <?php echo ($_GET['limit'] ?? '') == '5' ? 'selected' : '' ?> value="5">5</option>
+                        <option <?php echo ($_GET['limit'] ?? '') == '10' ? 'selected' : '' ?> value="10">10</option>
+                        <option <?php echo ($_GET['limit'] ?? '') == '15' ? 'selected' : '' ?> value="15">15</option>
+                        <option <?php echo ($_GET['limit'] ?? '') == '20' ? 'selected' : '' ?> value="20">20</option>
+                    </select>
+                    <!-- Page suivante et précédente -->
+                    <button type="submit">Appliquer</button>
+                    <button type="submit" name="page" value="<?= $prevPage; ?>">Page précédente</button>
+                    <button type="submit" name="page" value="<?= $nextPage; ?>">Page suivante</button>
+                </div>
+            </form>
+        </div>
 
-        // Fetch the data from the database
-        if (isset($_GET['search'])) {
-            $search = $_GET['search'];
-            $searchTerm = "%" . $search . "%";
-            
-            $sql = "SELECT * FROM `annonces` A 
-            INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
-            INNER JOIN `categories` C ON C.NoCategorie = A.Categorie
-            WHERE A.DescriptionAbregee LIKE :searchTerm 
-            OR A.DescriptionComplete LIKE :searchTerm 
-            OR U.Nom LIKE :searchTerm  
-            OR U.Prenom LIKE :searchTerm  
-            OR C.Description LIKE :searchTerm";
+        </div>
+        <div class="grid-container">
+            <?php
+            foreach ($items2 as $index => $item) {
+                // Fetch the author's full name
+                $fullName = $item['Nom'] . ' ' . $item['Prenom'];
 
-            $query = $db->prepare($sql);
-            $query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
-            $query->execute();
-            $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            $sql = "SELECT * FROM annonces";
-            $query = $db->prepare($sql);
-            $query->execute();
-            $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        // Assuming you have an array of images and descriptions
-        $items = [
-            ['img' => 'images/car.jpg', 'desc' => 'Voici ma voiture chéri, elle s\'appelle "La Bête", besoin d\'amour, mais en bonne condition'],
-            ['img' => 'images/bryan.jpg', 'desc' => 'Enfant à vendre, très aimable, dort mal la nuit, mais très mignon'],
-            ['img' => 'images/phone.jpg', 'desc' => 'Je vends mon nouveau Iphone 15 Pro Max, je veux un Samsung Galaxy S30 Ultra, échange possible'],
-            ['img' => 'images/mur.jpg', 'desc' => 'Je vends mon mur, raison: je veux un mur plus grand'],
-            ['img' => 'images/google.png', 'desc' => 'Je vends ma petite entreprise, elle s\'appelle "Google", elle a un bon potentiel de croissance'],
-            ['img' => 'images/rock.jpg', 'desc' => 'Voici The Rock, il est cool']
-        ];
-
-        foreach ($items2 as $index => $item) {
-            // Fetch the author's full name
-            $sql = "SELECT Nom, Prenom FROM utilisateurs WHERE NoUtilisateur = :NoUtilisateur";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([':NoUtilisateur' => $item['NoUtilisateur']]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            $fullName = $user['Nom'] . ' ' . $user['Prenom'];
-
-            // Fetch the category description
-            $sql = "SELECT Description FROM categories WHERE NoCategorie = :NoCategorie";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([':NoCategorie' => $item['Categorie']]);
-            $category = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            echo '<div class="grid-item">';
-            echo '<h2>Item ' . ($index + 1) . '</h2>';
-            echo '<p>No Annonce: ' . $item['NoAnnonce'] . '</p>';
-            echo '<p>Date d\'ajout: ' . $item['Parution'] . '</p>';
-            echo '<p>Auteur: ' . $fullName . '</p>';
-            echo '<p>Categorie: ' . $category['Description'] . '</p>';
-            echo '<p><a href="description.php?id=' . $item['NoAnnonce'] . '">' . $item['DescriptionAbregee'] . '</a></p>';
-            echo '<p>Prix: ' . $item['Prix'] . ' $ CAD</p>';
-            echo '<img src="' . $item['Photo'] . '" alt="' . $item['DescriptionComplete'] . '">';
-            echo '</div>';
-        }
+                echo '<div class="grid-item">';
+                echo '<h2>Item ' . ($index + 1) . '</h2>';
+                echo '<p>No Annonce: ' . $item['NoAnnonce'] . '</p>';
+                echo '<p>Date d\'ajout: ' . $item['Parution'] . '</p>';
+                echo '<p>Auteur: ' . $fullName . '</p>';
+                echo '<p>Categorie: ' . $item['Description'] . '</p>';
+                echo '<p><a href="description.php?id=' . $item['NoAnnonce'] . '">' . $item['DescriptionAbregee'] . '</a></p>';
+                echo '<p>Prix: ' . $item['Prix'] . ' $ CAD</p>';
+                echo '<img src="' . $item['Photo'] . '" alt="' . $item['DescriptionComplete'] . '">';
+                echo '</div>';
+            }
     }
-    require_once('close.php');
+    require_once ('close.php');
     ?>
     </div>
 </body>
+<footer>
+    <div class="text-center">
+        <p>
+            <?php
+            for ($i = 1; $i <= $nbPages; $i++) {
+                if($i == $nbPages){
+                    echo "<a href='annonces.php?page=$i'>$i</a>";
+                }
+                else {
+                    echo "<a href='annonces.php?page=$i'> $i,</a>";
+                }
+            }
+            ?>
+        </p>
+    </div>
+</footer>
 
 </html>
