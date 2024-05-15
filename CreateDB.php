@@ -1,30 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php
+require_once ("Ressources.php");
+require_once ("navigationAdmin.php");
 session_start();
 if (!isset($_SESSION['Courriel']) || $_SESSION['Courriel'] != 'admin@gmail.com') {
     //On redirige vers la page de connexion si la session n'existe pas ou si la session n'est pas égale à la session_id()
     header('Location: ../connexion.php');
 } else {
+    $binCreer = false;
     //si la variable de session courriel et MotDePasse sont ceux de l'administrateur alors la BD peut être créée
     ?>
-    <!DOCTYPE html>
-    <html lang="fr">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Créer BD</title>
-        <?php
-        require_once ("Ressources.php");
-        require_once ("Navigation.php");
-        $binCreer = false
-            ?>
+    <title>Créer BD</title>
+    <style>
+        h1 {
+            font-size: 50px;
+            text-align: center;
+            margin: 50px auto;
+        }
+    </style>
     </head>
 
     <body>
+        <h1>(Re)Création de la base de données</h1>
+        <form method="post" id="frmSaisie">
+            <button type="submit" name="btnCreerBD" class="btn btn-primary" value="true">Créer la Base de Données</button>
+        </form>
     </body>
-    <form method="post" id="frmSaisie">
-        <button type="submit" name="btnCreerBD" class="btn btn-primary" value="true">Créer la Base de Données</button>
-    </form>
 
     </html>
     <?php

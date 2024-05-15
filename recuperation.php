@@ -16,8 +16,8 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
     header('Location: connexion.php');
 } else {
 
-    require_once ("navigationConn.php");
     require_once ("Ressources.php");
+    require_once ("navigationConn.php");
     ?>
 
     <script type="text/javascript">
