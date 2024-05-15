@@ -1,72 +1,9 @@
-<style>
-    body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-image: url("./background.jpg");
-    }
+<!DOCTYPE html>
+<html>
+<?php 
+require_once ('Ressources.php');
+require_once ('navigation.php');
 
-    .confirm {
-        display: flex;
-        flex-direction: column;
-        width: 100vw;
-        height: 30vh;
-        background-color: #E8ECEF;
-        align-items: center;
-    }
-
-    .info {
-        display: flex;
-        flex-direction: column;
-        width: 100vw;
-        height: 30vh;
-        align-items: center;
-    }
-
-    .caseJaune {
-        display: flex;
-        width: 20%;
-        height: 30px;
-        background-color: #FCC106;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 20px;
-        margin: 50px;
-    }
-
-    form {
-        margin-left: 10%;
-        align-items: center;
-        width: 40%;
-    }
-
-    .bouton {
-        background-color: #007BFF;
-        width: 73%;
-        margin-bottom: 10px;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-    }
-
-    .email {
-        width: 70%;
-        margin-right: 0px;
-        border-color: lightgray;
-        border-radius: 5px;
-        border-width: 1px;
-        padding: 10px;
-    }
-
-    label {
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-</style>
-
-<?php
 session_start();
 if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
     //On redirige vers la page de connexion si la session n'existe pas ou si la session n'est pas égale à la session_id()
@@ -118,14 +55,79 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
     require_once ('close.php');
     ?>
 
-    <!DOCTYPE html>
-    <html>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url("./background.jpg");
+        }
 
-    <head>
-        <title>Votre Profil</title>
+        .confirm {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 30vh;
+            background-color: #E8ECEF;
+            align-items: center;
+        }
 
-        <?php require_once ('navigation.php'); ?>
+        .info {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 30vh;
+            align-items: center;
+        }
 
+        .caseJaune {
+            display: flex;
+            width: 20%;
+            height: 30px;
+            background-color: #FCC106;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 50px;
+        }
+
+        form {
+            margin-left: 10%;
+            align-items: center;
+            width: 40%;
+        }
+
+        .bouton {
+            background-color: #007BFF;
+            width: 73%;
+            margin-bottom: 10px;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .email {
+            width: 70%;
+            margin-right: 0px;
+            border-color: lightgray;
+            border-radius: 5px;
+            border-width: 1px;
+            padding: 10px;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 50px;
+            text-align: center;
+            margin: 50px auto;
+        }
+    </style>
+    <title>Votre Profil</title>
     </head>
 
     <body>

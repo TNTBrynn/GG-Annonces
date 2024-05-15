@@ -32,9 +32,9 @@ session_start();
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Liste des employés</title>
-        <?php require_once("../Ressources.php") ?>
+        <?php require_once("Ressources.php") ?>
 
-        <?php require_once("../Navigation.php"); ?>
+        <?php require_once("Navigation.php"); ?>
     </head>
 
     <body>
