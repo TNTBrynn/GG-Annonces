@@ -39,6 +39,8 @@ require_once ("navigationConn.php");
                             window.location.href = 'annonces.php';
                         } else if (response === 'profil') {
                             window.location.href = 'profil.php';
+                        } else if (response === 'admin') {
+                            window.location.href = 'administrateur.php';
                         } else {
                             alert(response);
                         }
