@@ -4,8 +4,8 @@
     }
 </style>
 <?php
-require_once ("navigationAdmin.php");
 require_once ("Ressources.php");
+require_once ("navigationAdmin.php");
 
 require_once ('connect.php');
 $statut = 0;

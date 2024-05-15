@@ -1,9 +1,9 @@
 NoUtilisateur, Categorie, DescriptionAbregee, DescriptionComplete, Prix, Photo, Etat
-4,3,'Costume rouge et bleu à rayure noire','Je vends mon costume rouge et bleu à rayure noire. Contient des produits biochimiques très irritants et des produits Stark Industries unique. Bon état et pourrais avoir besoin de quelques réparations mineures. Je n''en ai plus l''utilité.', 358598.56,'spooderman.jpg',1
-4,3,'ull', 'Voici ma voiture chéri elle s'appelle "La Bête" besoin d'amour mais en bonne condition', 10000, 'images/car.jpg', 1
-4,3, 'nbTeleTransps =', 'Enfant à vendre très aimable dort mal la nuit mais très mignon', 1500, 'images/bryan.jpg', 1
-4,6 ,'nbTeleTransps =',  'Je vends mon nouveau Iphone 15 Pro Max je veux un Samsung Galaxy S30 Ultra échange possible', 0, 'images/phone.jpg', 1
-4,3,'nbTeleTransps =', 'Je vends mon mur raison: je veux un mur plus grand', 135, 'images/mur.jpg', 1
-4,3,'nbTeleTransps =', 'Je vends ma petite entreprise elle s'appelle "Google" elle a un bon potentiel de croissance', 15, 'images/google.jpg', 1
-4,3,'nbTeleTransps =', 'Je vends mon chien il s'appelle "Rex" il est très gentil et aime les enfants', 100, 'images/dog.jpg', 1
-4,5,'nbTeleTransps =', 'Voici The Rock il est cool', 0, 'images/cat.jpg', 0
+4,3,'Costume rouge et bleu à rayure noire','Je vends mon costume rouge et bleu à rayure noire. Contient des produits biochimiques très irritants et des produits Stark Industries unique. Bon état et pourrait avoir besoin de quelques réparations mineures. Je n''en ai plus l''utilité.', 358598.56,'spooderman.jpg',1
+4,3,'Voiture', 'Voici ma voiture chéri elle s''appelle "La Bête" besoin d''amour mais en bonne condition', 10000, 'images/car.jpg', 1
+4,3, 'Enfant', 'Enfant à vendre très aimable dort mal la nuit mais très mignon', 1500, 'images/bryan.jpg', 1
+4,6,'Téléphone', 'Je vends mon nouveau Iphone 15 Pro Max je veux un Samsung Galaxy S30 Ultra échange possible', 0, 'images/phone.jpg', 1
+3,3,'Mur', 'Je vends mon mur raison: je veux un mur plus grand', 135, 'images/mur.jpg', 1
+4,3,'Google', 'Je vends ma petite entreprise elle s''appelle "Google" elle a un bon potentiel de croissance', 15, 'images/google.jpg', 1
+4,3,'Chien', 'Je vends mon chien il sappelle "Rex" il est très gentil et aime les enfants', 100, 'images/dog.jpg', 1
+4,5,'The Rock', 'Voici The Rock il est cool', 0, 'images/cat.jpg', 0

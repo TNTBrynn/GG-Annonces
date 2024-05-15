@@ -48,15 +48,17 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
         $sql = "SELECT * FROM `annonces` A 
             INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
             INNER JOIN `categories` C ON C.NoCategorie = A.Categorie
-            WHERE A.DescriptionAbregee LIKE :searchTerm 
+            WHERE U.Courriel = :email 
+            AND (A.DescriptionAbregee LIKE :searchTerm 
             OR A.DescriptionComplete LIKE :searchTerm 
             OR U.Nom LIKE :searchTerm  
             OR U.Prenom LIKE :searchTerm  
-            OR C.Description LIKE :searchTerm";
+            OR C.Description LIKE :searchTerm)";
 
         //Inscrit le nombre d'annonce
         $query = $db->prepare($sql);
         $query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
         $count = $query->rowCount();
         //Le nombre de page qui seront nécessaires
@@ -85,15 +87,18 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
 
         $query = $db->prepare($sql);
         $query->bindParam(':searchTerm', $searchTerm, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
         $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
     } else {
         $sql = "SELECT * FROM annonces A
                 INNER JOIN `utilisateurs` U ON U.NoUtilisateur = A.NoUtilisateur 
-                INNER JOIN `categories` C ON C.NoCategorie = A.Categorie";
+                INNER JOIN `categories` C ON C.NoCategorie = A.Categorie
+                WHERE U.Courriel = :email";
 
         //Inscrit le nombre d'annonce
         $query = $db->prepare($sql);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
         $count = $query->rowCount();
         //Le nombre de page qui seront nécessaires
@@ -120,6 +125,7 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
         }
 
         $query = $db->prepare($sql);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->execute();
         $items2 = $query->fetchAll(PDO::FETCH_ASSOC);
     }
