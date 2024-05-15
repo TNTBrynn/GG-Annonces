@@ -66,17 +66,21 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
 
         $nextPage = min($nbPages, $page + 1);
 
-
         //Premier résultat de la page
         $premierResultat = ($page - 1) * intval($_GET['limit']);
 
         if (isset($_GET['orderBy'])) {
             $orderBy = $_GET['orderBy'];
             $sql .= " ORDER BY $orderBy";
-        }
-        if (isset($_GET['ordre'])) {
-            $ordre = $_GET['ordre'];
-            $sql .= " $ordre";
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " $ordre";
+            }
+        } else {
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " ORDER BY noAnnonce $ordre";
+            }
         }
         if (isset($_GET['limit'])) {
             $limit = intval($_GET['limit']);
@@ -112,10 +116,15 @@ if (!isset($_SESSION['session']) || $_SESSION['session'] != session_id()) {
         if (isset($_GET['orderBy'])) {
             $orderBy = $_GET['orderBy'];
             $sql .= " ORDER BY $orderBy";
-        }
-        if (isset($_GET['ordre'])) {
-            $ordre = $_GET['ordre'];
-            $sql .= " $ordre";
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " $ordre";
+            }
+        } else {
+            if (isset($_GET['ordre'])) {
+                $ordre = $_GET['ordre'];
+                $sql .= " ORDER BY noAnnonce $ordre";
+            }
         }
         if (isset($_GET['limit'])) {
             $limit = intval($_GET['limit']);
