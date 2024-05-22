@@ -1,3 +1,4 @@
+Courriel, MotDePasse, NbConnexions, Statut, NoEmpl, Nom, Prenom, NoTelMaison, NoTelTravail, NoTelCellulaire, AutreInfos
 'admin@gmail.com','Secret123',0,1,1001,'John','Doe','(123) 456-7890N','(098) 765-4321 #0212P','(112) 233-4455N','Info1'
 'jane.doe@example.com','pass456',0,2,1002,'Jane','Doe','(234) 567-8901N','(087) 654-3210 #0009P','(221) 133-4455N','Info2'
 'mary.jane@example.com','pass789',0,3,1003,'Mary','Jane','(345) 678-9012N','(076) 543-2109 #0089P','(331) 122-4455N','Info3'

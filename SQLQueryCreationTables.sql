@@ -37,7 +37,7 @@ CREATE TABLE annonces(
     NoUtilisateur int DEFAULT NULL,
     Parution DATE DEFAULT CURRENT_TIMESTAMP,
     Categorie int DEFAULT NULL,
-    DescritpionAbregee varchar(50) DEFAULT NULL,
+    DescriptionAbregee varchar(50) DEFAULT NULL,
     DescriptionComplete varchar(255) DEFAULT NULL,
     Prix DECIMAL(10,2) DEFAULT NULL,
     Photo varchar(50) DEFAULT NULL,
