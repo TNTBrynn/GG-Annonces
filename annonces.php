@@ -241,7 +241,7 @@ require_once ('close.php');
                     <?php
                     for ($i = 1; $i <= $nbPages; $i++) {
                         ?>
-                        <button onclick="window.location.href='annonces.php?page=<?= $i ?>'" <?php if ($i == $page) {
+                        <button name='page' value="<?= $i ?>'" <?php if ($i == $page) {
                               echo 'style="color: blue;"';
                           } ?>>
                             <?= $i ?></button>

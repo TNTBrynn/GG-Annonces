@@ -35,7 +35,7 @@
 ?>
     <div class="navbar">
         <!-- Contenu de la barre de navigation -->
-        <a class="connex" href="CreateDB.php">Base de données</a>
+        <!-- <a class="connex" href="CreateDB.php">Base de données</a> -->
         <a class="connex" href="administrateur.php">Annonces GG</a>
         <a class="connex" href="utilisateurs.php">Utilisateurs</a>
         <a class="connex" href="nettoyageBD.php">Nettoyage</a>

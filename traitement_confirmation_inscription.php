@@ -14,11 +14,8 @@ $query->bindValue(':email', $email, PDO::PARAM_STR);
 $query->execute();
 $result = $query->fetch(PDO::FETCH_ASSOC);
 
-//echo $result['Statut'];
-
 if ($result['Statut'] != 0)
     $dejaConnecter = true;
-// echo '<script>alert("Ce courriel a déjà été confirmé. Veuillez vous connecter.")</script>';
 else {
     // Change le statut de l'utilisateur à confirmé
     $nouvStatut = 9;

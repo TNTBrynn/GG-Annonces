@@ -47,6 +47,7 @@ require_once "Ressources.php";
                         if (response === 'nosuccess') {
                             alert("Ce courriel est déja enregistré. Veuillez vous connecter.");
                         } else {
+                            // alert(response);
                             document.getElementById("confirmation").style.display = "block";
                             document.getElementById("inscription").style.display = "none";
                         }

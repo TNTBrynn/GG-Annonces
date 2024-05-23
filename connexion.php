@@ -35,11 +35,11 @@ require_once ("navigationConn.php");
                         password: strMDP
                     },
                     success: function (response) {
-                        if (response === '0annonces') {
+                        if (response === 'annonces') {
                             window.location.href = 'annonces.php';
-                        } else if (response === '0profil') {
+                        } else if (response === 'profil') {
                             window.location.href = 'profil.php';
-                        } else if (response === '0admin') {
+                        } else if (response === 'admin') {
                             window.location.href = 'administrateur.php';
                         } else {
                             alert(response);

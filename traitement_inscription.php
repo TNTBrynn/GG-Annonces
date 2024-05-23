@@ -1,17 +1,12 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 require 'vendor/autoload.php';
 
 session_start();
 
 require_once ('connect.php');
 
-// $_SESSION["Courriel"] = null;
-
-// $_SESSION["Nom"] = 'null';
-// $_SESSION["Prenom"] = 'null';
 $success = false;
 
 //vérifie que le email et mdp ont bien été reçus en POST
@@ -46,8 +41,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         $query->bindValue(':statut', $statut, PDO::PARAM_INT);
 
         $query->execute();
-        $_SESSION('Courriel') = $_POST['email'];
-        $_SESSION('session') = session_id();
+        // $_SESSION('session') = session_id();
         echo "success";
         $success = true;
     }
